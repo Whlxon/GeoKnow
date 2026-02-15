@@ -1,10 +1,12 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
 import './index.css'
 
 import App from './Pages/App.tsx'
 import { HomePage } from './Pages/homepage/homepage.tsx';
+import { CountryPage } from './Pages/countrypages/countrypages.tsx';
 
 const router = createBrowserRouter([
   {
@@ -14,6 +16,10 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <HomePage/>
+      },
+      {
+        path: '/CountryPage',
+        element: <CountryPage/>
       }
     ]
   }
