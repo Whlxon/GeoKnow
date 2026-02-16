@@ -110,9 +110,9 @@ export function CountryPage () {
         
     };
 
-    const handleQuestionSubmit = async (e:any) => {
+    const handleQuestionSubmit = async () => {
         const pays = localStorage.getItem('country')
-        const question = e.target.value;
+        const question = valeur;
 
         if(pays === null){
             return;
