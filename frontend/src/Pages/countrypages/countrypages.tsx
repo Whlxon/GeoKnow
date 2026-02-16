@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
-import { saveConversation, readConversations, readConversationByCountry } from "../utils/conversations";
+import { saveConversation, readConversationByCountry } from "../utils/conversations";
 
 import { apiKey } from "../../apiKey";
 
@@ -13,7 +13,7 @@ interface Conv {
 
 export function CountryPage () {
     const [country, setCountry] = useState<string>("");
-    const [conv, setConv] = useState();
+    const [conv, setConv] = useState<Conv[]>();
     const navigate = useNavigate();
 
     const handleQuestionSubmit = async (e:any) => {
@@ -145,7 +145,7 @@ export function CountryPage () {
         <>
             
             <h1 style={{textDecoration:'Underline'}}>{country}</h1>
-            <button style={{backgroundColor:"#ff6961"}} onClick={()=>{navigate('/')}}>Retour à la liste des pays</button><br/>
+            <button style={{backgroundColor:"#fc817b", color:"#963e39"}} onClick={()=>{navigate('/')}}>Retour à la liste des pays</button><br/>
             
             <hr/><br/>
             <h2 style={{textDecoration:'Underline'}}>Questions Suggerer</h2>
