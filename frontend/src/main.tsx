@@ -5,7 +5,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css'
 
 import App from './Pages/App.tsx'
-import { HomePage } from './Pages/homepage/homepage.tsx';
+import { HomePage } from './Pages/homepage/countrySelection.tsx';
 import { CountryPage } from './Pages/countrypages/countrypages.tsx';
 
 const router = createBrowserRouter([

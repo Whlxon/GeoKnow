@@ -83,15 +83,15 @@ export function CountryPage () {
             });
 
             saveConversation(country, currentConversation);
-
-            setLoading(false);
-            navigate(0)
             
             
         } catch (error) {
             console.error("Erreur API Mammouth:", error);
             return "Désolé, je n'ai pas pu obtenir de réponse.";
         }
+
+        setLoading(false);
+        navigate(0)
     };
 
     const handleQuestionSubmit = async (e:any) => {
