@@ -51,10 +51,9 @@ export function CountryPage () {
                         - Si l'utilisateur te demande de lui poser une question dit simplement:
                         "Je ne peux pas te poser de question car je ne peux pas me rappeller des anciens message :/"
 
-                        - Ne répond que à des questions sur l'histoire géo et politique, même une blague tu répond pas
-                        (Garde des interactions tel que "bonjour! ", "aurevoir !", "comment tu va?" etc, juste si tu vois qu'il s'écarte du sujet ramène le)
+                        - Ne répond que à des questions sur l'histoire géo et politique, si l'utilisateur comment à s'écarter du sujet ramène le vers l'histoiren, géo et politique
                         
-                        - Si la question posée par l'utilisateur n'a rien à voir avec l'histoire géo d'un pays, répond par: "Désoler votre question est hors sujet :/"
+                        - Si vraiment la question posée par l'utilisateur n'a rien à voir avec l'histoire géo et politique d'un pays, répond par: "Désoler votre question est hors sujet :/"
 
                         - N'utilise pas les embedings tel que les double étoile pour le gras, ou des tiret pour souligner car ça ne fonctionnera pas du tout
 
