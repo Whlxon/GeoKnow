@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { saveConversation, readConversationByCountry } from "../utils/conversations";
 
-import { apiKey } from "../../apiKey";
+const apiKey = import.meta.env.MAMMOUTH_APIKEY;
 
 import '../../index.css'
 
