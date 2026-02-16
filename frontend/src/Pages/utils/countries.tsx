@@ -17,7 +17,7 @@ export const getRandomCountry = (): Country => {
 
 }
 
-export const getLike = (name: string): Country[] | undefined => {
+export const getLike = (name: string): Country[] => {
     if(name === " " || name === ""){
         return countries;
     }
@@ -32,7 +32,7 @@ export const getLike = (name: string): Country[] | undefined => {
     }
 
     if(countryList.length === 0){
-        let countryList = [{
+        countryList = [{
         id: -1,
         name: "No Country Found"
     }]

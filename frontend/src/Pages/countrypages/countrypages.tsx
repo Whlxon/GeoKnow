@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
-import { saveConversation, readConversationByCountry, readConversations } from "../utils/conversations";
+import { saveConversation, readConversationByCountry } from "../utils/conversations";
 
 import { apiKey } from "../../apiKey";
 
