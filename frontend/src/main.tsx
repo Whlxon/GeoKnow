@@ -7,6 +7,7 @@ import './index.css'
 import App from './Pages/App.tsx'
 import { HomePage } from './Pages/homepage/countrySelection.tsx';
 import { CountryPage } from './Pages/countrypages/countrypages.tsx';
+import { Password } from './Pages/mdp/password.tsx';
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
+        element: <Password/>
+      },
+      {
+        path: '/selection',
         element: <HomePage/>
       },
       {

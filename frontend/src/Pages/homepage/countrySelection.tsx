@@ -16,6 +16,13 @@ export function HomePage (){
 
 
     useEffect(()=>{
+        const pswd = localStorage.getItem('password');
+        const password = import.meta.env.VITE_PASSWORD_KEY;
+
+        if(pswd != password){
+            navigate('/');
+        }
+
         setCountry(getAll());
     }, [
 

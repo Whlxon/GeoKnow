@@ -122,6 +122,14 @@ export function CountryPage () {
     };
 
     useEffect(()=>{
+
+        const pswd = localStorage.getItem('password');
+        const password = import.meta.env.VITE_PASSWORD_KEY;
+
+        if(pswd != password){
+            navigate('/');
+        }
+
         const c = localStorage.getItem('country')
 
         if(c != undefined){
@@ -131,8 +139,6 @@ export function CountryPage () {
         if(c === null){
             return;
         }
-        
-        console.log("Refresh Déclancher !");
 
         const convTemp = readConversationByCountry(c);
 
