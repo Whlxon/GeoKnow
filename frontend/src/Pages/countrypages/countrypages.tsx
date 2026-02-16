@@ -49,7 +49,7 @@ export function CountryPage () {
                          ne pose pas de question à l'utilisateur, cela ne sert à rien. répond simplement à la question.
                         
                         - Si l'utilisateur te demande de lui poser une question dit simplement:
-                        "Je ne peux pas te poser de question car je ne peux pas ma rappeller des anciens message envoyer, dommage"
+                        "Je ne peux pas te poser de question car je ne peux pas me rappeller des anciens message :/"
 
                         - Ne répond que à des questions sur l'histoire géo et politique, même une blague tu répond pas
                         (Garde des interactions tel que "bonjour! ", "aurevoir !", "comment tu va?" etc, juste si tu vois qu'il s'écarte du sujet ramène le)
