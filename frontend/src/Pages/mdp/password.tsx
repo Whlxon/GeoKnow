@@ -8,20 +8,15 @@ export function Password (){
     const navigate = useNavigate();
 
     const handleChange = (e:any) => {
-        setInputValue(e.target.value); 
-        console.log(e.target.value);
+        setInputValue(e.target.value);
     };
 
     const handleSubmit = (e:any) => {
         e.preventDefault();
 
-        console.log("Submit handled !!")
-
         const password = import.meta.env.VITE_PASSWORD_KEY;
         
         const pswd = inputValue;
-
-        console.log('Voici le mot de passe introduit', pswd);
 
         if(pswd === password){
             localStorage.setItem('password', pswd);
