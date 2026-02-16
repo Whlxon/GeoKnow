@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export function Password (){
@@ -26,6 +26,15 @@ export function Password (){
             setError(true);
         }
     }
+
+    useEffect(()=>{
+        const pswd = localStorage.getItem('password');
+        const password = import.meta.env.VITE_PASSWORD_KEY;
+
+        if(pswd === password){
+            navigate('/selection');
+        }
+    }, [])
 
     return (
         <>
