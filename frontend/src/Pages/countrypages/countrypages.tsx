@@ -17,8 +17,10 @@ export function CountryPage () {
     const [loading, setLoading] = useState(false);
     const [refresh, setRefresh] = useState<boolean>(false);
     const [speach, setSpeach] = useState(true);
-    const [speachError, setSpeachError] = useState(false);
+    
     const [valeur, setValeur] = useState('');
+    const [speachError, setSpeachError] = useState(false);
+
     const navigate = useNavigate();
 
     const aiModel = "gpt-5-mini";
