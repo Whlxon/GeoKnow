@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
-import { saveConversation, readConversationByCountry } from "../utils/conversations";
+import { saveConversation, readConversationByCountry, readConversations } from "../utils/conversations";
 
 import { apiKey } from "../../apiKey";
 
@@ -19,11 +19,10 @@ export function CountryPage () {
 
     const aiModel = "gpt-5-mini";
 
-    const handleQuestionSubmit = async (e:any) => {
-        const pays = localStorage.getItem('country')
-        const question = e.target.value;
-        
-        const currentConversation: Conv[] = [
+    const sendQuestion = async (question: string, pays: string) => {
+        const historique = readConversations();
+
+        let currentConversation: Conv[] = [
             {
             user: 'user',
             message: question
@@ -37,16 +36,15 @@ export function CountryPage () {
             messages: [
             {
                 role: 'user', 
-                content:`Tu es un expert en histoire et géographie. Réponds de manière concise (petit paragraphe 150 mots) et précise.
+                content:`Tu es un expert en histoire, géographie et Politique. Réponds de manière concise (petit paragraphe 150 mots) et précise.
                         Si la question n'est pas claire, demande des précisions.
 
                         Peux tu répondre à la question comme si tu répondais à un débutant qui s'y connais pas du tout.
 
                         Utilise un Jargon d'enfant.
 
-                        Hésite pas à expliquer avec des métaphores, si tu sais.
-
-                        Vraiment ne répond que à des questions sur l'histoire géo et rien d'autre, même une blague tu répond pas
+                        Vraiment ne répond que à des questions sur l'histoire géo et rien d'autre, même une blague tu répond pas 
+                        (mais si quelqu'un te salue, présente toi tout de même ^^)
                         
                         Si la question posée par l'utilisateur n'a rien à voir avec l'histoire géo d'un pays, répond par:
                         "Désoler votre question est hors sujet :/"
@@ -95,8 +93,28 @@ export function CountryPage () {
             console.error("Erreur API Mammouth:", error);
             return "Désolé, je n'ai pas pu obtenir de réponse.";
         }
+    };
 
+    const handleQuestionSubmit = async (e:any) => {
+        const pays = localStorage.getItem('country')
+        const question = e.target.value;
+
+        if(pays === null){
+            return;
+        }
+
+        sendQuestion(question, pays)
     }
+
+    const handleSuggest = (question: string) => {
+        const pays = localStorage.getItem('country')
+
+        if(pays === null){
+            return;
+        }
+
+        sendQuestion(question, pays)
+    };
 
     useEffect(()=>{
         const c = localStorage.getItem('country')
@@ -126,12 +144,12 @@ export function CountryPage () {
                             return(
                                 <>
                                     <div>
-                                        { msg.user === 'ai' && <div style={{marginTop:'5px', marginBottom:'12px', textAlign:'left', marginLeft:'10vw'}} key={index}>
+                                        { msg.user === 'ai' && <div style={{marginTop:'5px', marginBottom:'12px', textAlign:'left', marginLeft:'10vw', marginRight:'10vw'}} key={index}>
                                             <div style={{textDecoration:"Underline", fontSize:"larger"}}>GeoKnow ({aiModel})</div> <br/>
                                             {msg.message}
                                         </div>
                                         }
-                                        { msg.user === 'user' && <div style={{marginTop:'5px', marginBottom:'12px', textAlign:'right', marginRight:'10vw'}} key={index}>
+                                        { msg.user === 'user' && <div style={{marginTop:'5px', marginBottom:'12px', textAlign:'right', marginLeft:'10vw', marginRight:'10vw'}} key={index}>
                                             <div style={{textDecoration:"Underline", fontSize:"larger"}}>Vous:</div><br/>
                                             {msg.message}
                                         </div>
@@ -154,14 +172,14 @@ export function CountryPage () {
             <button style={{backgroundColor:"#fc817b", color:"#963e39"}} onClick={()=>{navigate('/')}}>Retour à la liste des pays</button><br/>
             
             <hr/><br/>
-            <h2 style={{textDecoration:'Underline'}}>Questions Suggérer</h2>
-            <button className="buttonSuggest"><li>Quel est la capital ?</li></button><br/>
-            <button className="buttonSuggest"><li>Combien a-t-il d'habitant ?</li></button><br/>
-            <button className="buttonSuggest"><li>Quels sont les traditions ?</li></button><br/>
-            <button className="buttonSuggest"><li>Quels sont les villes avec +1000 habitants ?</li></button><br/>
-            <button className="buttonSuggest"><li>Quel est l'histoire la plus connu du pays ?</li></button><br/><br/>
+            <h2 style={{textDecoration:'Underline'}}>Questions Suggérées</h2>
+            <button className="buttonSuggest" onClick={() => {handleSuggest("Quel est la capital ?")}}><li>Quel est la capital ?</li></button><br/>
+            <button className="buttonSuggest" onClick={() => {handleSuggest("Combien a-t-il d'habitant ?")}}><li>Combien a-t-il d'habitant ?</li></button><br/>
+            <button className="buttonSuggest" onClick={() => {handleSuggest("Quels sont les traditions ?")}}><li>Quels sont les traditions ?</li></button><br/>
+            <button className="buttonSuggest" onClick={() => {handleSuggest("Quels sont les villes avec +1000 habitants ?")}}><li>Quels sont les villes avec +1000 habitants ?</li></button><br/>
+            <button className="buttonSuggest" onClick={() => {handleSuggest("Quel est l'histoire la plus connu du pays ?")}}><li>Quel est l'histoire la plus connu du pays ?</li></button><br/><br/>
 
-            <div style={{backgroundColor:"#faedcd", borderRadius:"20px", padding:'15px'}} >
+            <div style={{backgroundColor:"#e2e9ab", borderRadius:"20px", padding:'15px', marginBottom:"5vh"}} >
                 <ConvProp/>
                 {loading && <div className="loader" style={{scale:"50%", textAlign:"center", marginLeft: "10vw"}}></div>}
                 <input onKeyPress={(e) => e.key === 'Enter' && handleQuestionSubmit(e)} className="askQ" type="text" placeholder="Posez votre question ici" /><br/>

@@ -4,7 +4,7 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  background-color: #fefae0;
+  background-color: #faf4ca;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -13,7 +13,7 @@
 }
 
 * {
-  color: #8a6a4a;
+  color: #899153;
 }
 
 button {
@@ -50,7 +50,8 @@ h1 {
 
 .buttonSuggest{
   margin-top: 2vw;
-  background-color: #d4a373;
+  padding-left: 3%;
+  background-color: #cbd67a;
 }
 
 .askQ{
@@ -65,23 +66,29 @@ h1 {
 }
 
 .buttonPays{
-  width: 80vw;
+  width: 50vw;
   margin-top: 7px;
-  background-color: #d4a373;
+  background-color: #d0da8b;
 }
 
 .randomBu{
   margin-left: 2vw;
-  background-color: #d4a373;
+  margin-right: 1vw;
+  background-color: #cbd67a;
 }
 
 .ResearchBar{
   width: 80vw;
   height: 4vh;
+  border: 0.5;
   border-radius: 20px;
-  border: 0;
+  border-color: transparent;
   padding: 10px;
   background-color: #e9edc9;
+}
+
+.ResearchBar:hover{
+  border-color: #00000009;
 }
 
 

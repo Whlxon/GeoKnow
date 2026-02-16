@@ -38,13 +38,11 @@ export function HomePage (){
     const handleChangement = (e: any) => {
         const name = e.target.value
 
-        const c =  getLike(name);
+        const c = getLike(name);
         
-        if(c === undefined){
-            setCountry(defaultCountries);
-        }else{
-            setCountry(c);
-        }
+        
+        setCountry(c);
+        
     };
 
     const handleReset = () => {

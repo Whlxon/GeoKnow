@@ -22,16 +22,20 @@ export const getLike = (name: string): Country[] | undefined => {
         return countries;
     }
     
-    let countryList = [{
-        id: -1,
-        name: "No Country Found"
-    }]
+    let countryList = []
+    
     
     for(let i = 0; i < countries.length; i++){
         if(countries[i].name.includes(name)){
-            countryList = []
             countryList.push(countries[i]);
         }
     }
+
+    if(countryList.length === 0){
+        let countryList = [{
+        id: -1,
+        name: "No Country Found"
+    }]
+}
     return countryList;
 };

@@ -1,7 +1,6 @@
 export interface Country {
     id: number,
-    name: string,
-    elements?: []
+    name: string
 }
 
 export const countries: Country[] = [
