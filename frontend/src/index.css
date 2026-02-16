@@ -95,19 +95,32 @@ h1 {
 /* HTML: <div class="loader"></div> */
 .loader {
   width: 60px;
-  aspect-ratio: 2;
-  --_g: no-repeat radial-gradient(circle closest-side,#000 90%,#0000);
-  background: 
-    var(--_g) 0%   50%,
-    var(--_g) 50%  50%,
-    var(--_g) 100% 50%;
-  background-size: calc(100%/3) 50%;
-  animation: l3 1s infinite linear;
+  aspect-ratio: .5;
+  display: grid;
 }
-@keyframes l3 {
-    20%{background-position:0%   0%, 50%  50%,100%  50%}
-    40%{background-position:0% 100%, 50%   0%,100%  50%}
-    60%{background-position:0%  50%, 50% 100%,100%   0%}
-    80%{background-position:0%  50%, 50%  50%,100% 100%}
+.loader:before {
+  content: "";
+  width: 30%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  margin: auto auto 0;
+  background: #CF4647;
+  animation: l9-0 .5s cubic-bezier(0,800,1,800) infinite;
 }
-
+.loader:after {
+  content: "";
+  width: 100%;
+  aspect-ratio: 1/cos(30deg);
+  margin: 0 auto auto;
+  clip-path: polygon(50% -50%,100% 50%,50% 150%,0 50%);
+  background: #524656;
+  animation: l9-1 .5s linear infinite;
+}
+@keyframes l9-0 {
+  0%,2%  {translate: 0   0%}
+  98%,to {translate: 0 -.2%}
+}
+@keyframes l9-1 {
+  0%,5%  {rotate:  0deg}
+  95%,to {rotate:-60deg}
+}

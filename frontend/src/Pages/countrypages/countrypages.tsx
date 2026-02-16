@@ -20,7 +20,6 @@ export function CountryPage () {
     const aiModel = "gpt-5-mini";
 
     const sendQuestion = async (question: string, pays: string) => {
-        const historique = readConversations();
 
         let currentConversation: Conv[] = [
             {
@@ -181,7 +180,7 @@ export function CountryPage () {
 
             <div style={{backgroundColor:"#e2e9ab", borderRadius:"20px", padding:'15px', marginBottom:"5vh"}} >
                 <ConvProp/>
-                {loading && <div className="loader" style={{scale:"50%", textAlign:"center", marginLeft: "10vw"}}></div>}
+                {loading && <div className="loader" style={{marginLeft:"auto", marginRight:"auto", marginBottom:"5px"}}></div>}
                 <input onKeyPress={(e) => e.key === 'Enter' && handleQuestionSubmit(e)} className="askQ" type="text" placeholder="Posez votre question ici" /><br/>
             </div>
         </>
