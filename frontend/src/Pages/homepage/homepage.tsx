@@ -17,7 +17,6 @@ export function HomePage (){
 
     useEffect(()=>{
         setCountry(getAll());
-        isPrivateMode()
     }, [
 
     ])
@@ -52,17 +51,6 @@ export function HomePage (){
         localStorage.setItem('conversations', "")
     }
 
-    const isPrivateMode = () => {
-        try {
-            localStorage.setItem('test', 'test');
-            localStorage.removeItem('test');
-            return;
-        } catch (e) {
-            alert("⚠️ Mode navigation privée détecté. Désactivez-le pour sauvegarder vos données.");
-            return;
-        }
-    }
-
 
     const CountryProp = () => {
         return (
@@ -87,9 +75,9 @@ export function HomePage (){
 
     return (
         <>
-         <input onChange={handleChangement} className="ResearchBar" placeholder="Recherche un Pays/Ville" style={{color:"#ffffff"}}/>
+         <input onChange={handleChangement} className="ResearchBar" placeholder="Recherche un Pays/Ville"/>
          <button className="randomBu" onClick={() => {handleRandom()}}><img src="/random.png" alt="" /></button>
-         <button style={{backgroundColor:"red", marginLeft:"3px"}} onClick={() => {handleReset()}}>Reset Conv</button>
+         <button style={{backgroundColor:"#fc817b", color:"#963e39"}} onClick={() => {handleReset()}}>Reset Conv</button>
          <hr/>
          {country != undefined && <CountryProp/>}
         </>

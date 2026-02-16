@@ -14,7 +14,10 @@ interface Conv {
 export function CountryPage () {
     const [country, setCountry] = useState<string>("");
     const [conv, setConv] = useState<Conv[]>();
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+
+    const aiModel = "gpt-5-mini";
 
     const handleQuestionSubmit = async (e:any) => {
         const pays = localStorage.getItem('country')
@@ -30,7 +33,7 @@ export function CountryPage () {
         const url = "https://api.mammouth.ai/v1/chat/completions";
 
         const requestBody = {
-            model: 'gpt-5-mini',
+            model: `${aiModel}`,
             messages: [
             {
                 role: 'user', 
@@ -56,6 +59,8 @@ export function CountryPage () {
                         ${question}`
             },
         ]}
+        
+        setLoading(true);
 
         try {
             const response = await fetch(url, {
@@ -82,6 +87,7 @@ export function CountryPage () {
 
             saveConversation(country, currentConversation);
 
+            setLoading(false);
             navigate(0)
             
             
@@ -121,7 +127,7 @@ export function CountryPage () {
                                 <>
                                     <div>
                                         { msg.user === 'ai' && <div style={{marginTop:'5px', marginBottom:'12px', textAlign:'left', marginLeft:'10vw'}} key={index}>
-                                            <div style={{textDecoration:"Underline", fontSize:"larger"}}>GeoKnow:</div> <br/>
+                                            <div style={{textDecoration:"Underline", fontSize:"larger"}}>GeoKnow ({aiModel})</div> <br/>
                                             {msg.message}
                                         </div>
                                         }
@@ -148,15 +154,16 @@ export function CountryPage () {
             <button style={{backgroundColor:"#fc817b", color:"#963e39"}} onClick={()=>{navigate('/')}}>Retour à la liste des pays</button><br/>
             
             <hr/><br/>
-            <h2 style={{textDecoration:'Underline'}}>Questions Suggerer</h2>
+            <h2 style={{textDecoration:'Underline'}}>Questions Suggérer</h2>
             <button className="buttonSuggest"><li>Quel est la capital ?</li></button><br/>
             <button className="buttonSuggest"><li>Combien a-t-il d'habitant ?</li></button><br/>
             <button className="buttonSuggest"><li>Quels sont les traditions ?</li></button><br/>
             <button className="buttonSuggest"><li>Quels sont les villes avec +1000 habitants ?</li></button><br/>
             <button className="buttonSuggest"><li>Quel est l'histoire la plus connu du pays ?</li></button><br/><br/>
 
-            <div style={{backgroundColor:"#8a656d", borderRadius:"20px", padding:'15px'}} >
+            <div style={{backgroundColor:"#faedcd", borderRadius:"20px", padding:'15px'}} >
                 <ConvProp/>
+                {loading && <div className="loader" style={{scale:"50%", textAlign:"center", marginLeft: "10vw"}}></div>}
                 <input onKeyPress={(e) => e.key === 'Enter' && handleQuestionSubmit(e)} className="askQ" type="text" placeholder="Posez votre question ici" /><br/>
             </div>
         </>
