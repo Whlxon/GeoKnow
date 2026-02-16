@@ -15,6 +15,7 @@ export function CountryPage () {
     const [country, setCountry] = useState<string>("");
     const [conv, setConv] = useState<Conv[]>();
     const [loading, setLoading] = useState(false);
+    const [refresh, setRefresh] = useState<boolean>(false);
     const navigate = useNavigate();
 
     const aiModel = "gpt-5-mini";
@@ -85,13 +86,14 @@ export function CountryPage () {
             saveConversation(country, currentConversation);
 
             setLoading(false);
-            navigate(0)
+            setRefresh(!refresh);
             
             
         } catch (error) {
             console.error("Erreur API Mammouth:", error);
             setLoading(false);
-            navigate(0)
+            setRefresh(!refresh);
+            
             return "Désolé, je n'ai pas pu obtenir de réponse.";
         }
 
