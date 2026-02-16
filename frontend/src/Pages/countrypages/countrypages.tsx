@@ -8,7 +8,7 @@ import '../../index.css'
 
 interface Conv {
     user: string,
-    message: string
+    message: string,
 }
 
 export function CountryPage () {
