@@ -138,7 +138,7 @@ export function CountryPage () {
 
         setConv(convTemp);
 
-    }, [])
+    }, [refresh])
 
 
     const ConvProp = () => {
