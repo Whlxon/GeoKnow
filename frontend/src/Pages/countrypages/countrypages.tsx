@@ -4,7 +4,7 @@ import { saveConversation, readConversationByCountry } from "../utils/conversati
 
 const apiKey = import.meta.env.VITE_MAMMOUTH_APIKEY;
 
-import './index.css'
+import './index.css';
 
 interface Conv {
     user: string,
