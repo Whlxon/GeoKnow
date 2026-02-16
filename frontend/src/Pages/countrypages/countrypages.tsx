@@ -4,7 +4,7 @@ import { saveConversation, readConversationByCountry } from "../utils/conversati
 
 const apiKey = import.meta.env.VITE_MAMMOUTH_APIKEY;
 
-import '../../index.css'
+import './index.css'
 
 interface Conv {
     user: string,
@@ -16,6 +16,8 @@ export function CountryPage () {
     const [conv, setConv] = useState<Conv[]>();
     const [loading, setLoading] = useState(false);
     const [refresh, setRefresh] = useState<boolean>(false);
+    const [speach, setSpeach] = useState(true);
+    const [speachError, setSpeachError] = useState(false);
     const navigate = useNavigate();
 
     const aiModel = "gpt-5-mini";
@@ -127,6 +129,23 @@ export function CountryPage () {
         sendQuestion(question, pays)
     };
 
+    const handleSpeach = (text: string) => {
+        if(speach){
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'fr-FR';
+                window.speechSynthesis.speak(utterance);
+                setSpeachError(false);
+            } else {
+                setSpeachError(true);
+            }
+            setSpeach(!speach);
+        }else{
+            window.speechSynthesis.cancel();
+            setSpeach(true);
+        }
+    }
+
     useEffect(()=>{
 
         const pswd = localStorage.getItem('password');
@@ -165,7 +184,7 @@ export function CountryPage () {
                                     <div>
                                         { msg.user === 'ai' && <div style={{marginTop:'5px', marginBottom:'12px', textAlign:'left', marginLeft:'10vw', marginRight:'10vw'}} key={index}>
                                             <div style={{textDecoration:"Underline", fontSize:"larger"}}>GeoKnow ({aiModel})</div> <br/>
-                                            {msg.message}
+                                            {msg.message} <button className="listenB" onClick={() => {handleSpeach(msg.message)}}><img src="/ecoute.png"/></button>
                                         </div>
                                         }
                                         { msg.user === 'user' && <div style={{marginTop:'5px', marginBottom:'12px', textAlign:'right', marginLeft:'10vw', marginRight:'10vw'}} key={index}>
@@ -188,6 +207,7 @@ export function CountryPage () {
         <>
             
             <h1 style={{textDecoration:'Underline'}}>{country}</h1>
+            {speachError && <><div style={{color:"Red"}}>Désoler le navigateur ne prend pas en charge la voix</div></>}
             <button style={{backgroundColor:"#fc817b", color:"#963e39"}} onClick={()=>{navigate('/')}}>Retour à la liste des pays</button><br/>
             
             <hr/><br/>

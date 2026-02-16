@@ -3,7 +3,7 @@ import type { Country } from '../utils/countryList';
 import { getLike, getAll, getRandomCountry } from "../utils/countries";
 import { useNavigate } from "react-router-dom";
 
-import '../../index.css'
+import './index.css'
 
 const defaultCountries: Country[] = [{
     id: -1,
