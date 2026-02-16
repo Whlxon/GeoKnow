@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { saveConversation, readConversations, readConversationByCountry } from "../utils/conversations";
 
+import { apiKey } from "../../apiKey";
 
 import '../../index.css'
 
@@ -60,7 +61,7 @@ export function CountryPage () {
             const response = await fetch(url, {
             method: "POST",
             headers: {
-                Authorization: "Bearer sk-OmGGYkv7jreBsN2v_33dIA",
+                Authorization: `Bearer ${apiKey}`,
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(requestBody),
