@@ -18,11 +18,13 @@ export function CountryPage () {
     const [refresh, setRefresh] = useState<boolean>(false);
     const [speach, setSpeach] = useState(true);
     const [speachError, setSpeachError] = useState(false);
+    const [valeur, setValeur] = useState('');
     const navigate = useNavigate();
 
     const aiModel = "gpt-5-mini";
 
     const sendQuestion = async (question: string, pays: string) => {
+        setValeur('');
 
         let currentConversation: Conv[] = [
             {
@@ -221,7 +223,7 @@ export function CountryPage () {
             <div style={{backgroundColor:"#e2e9ab", borderRadius:"20px", padding:'15px', marginBottom:"5vh"}} >
                 <ConvProp/>
                 {loading && <div className="loader" style={{marginLeft:"auto", marginRight:"auto", marginBottom:"5px"}}></div>}
-                <input onKeyPress={(e) => e.key === 'Enter' && handleQuestionSubmit(e)} className="askQ" type="text" placeholder="Posez votre question ici" /><br/>
+                <input onKeyPress={(e) => e.key === 'Enter' && handleQuestionSubmit()} value={valeur} onChange={(e) => setValeur(e.target.value)} className="askQ" type="text" placeholder="Posez votre question ici" /><br/>
             </div>
         </>
     )
