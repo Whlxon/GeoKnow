@@ -131,6 +131,8 @@ export function CountryPage () {
         if(c === null){
             return;
         }
+        
+        console.log("Refresh Déclancher !");
 
         const convTemp = readConversationByCountry(c);
 
