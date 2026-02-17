@@ -38,8 +38,8 @@ export function Password (){
 
     return (
         <>
-            <h1>Cette Application est privé</h1>
-            <h2>Veuillez entré le mot de passe pour pouvoir y accéder</h2>
+            <h1>Cette application est privée</h1>
+            <h2>Veuillez entrer le mot de passe pour pouvoir y accéder</h2>
             {error && <><div style={{color:"Red"}}>Mot de passe Incorrect</div></>}
             <form onSubmit={handleSubmit}>
                 <input type="password" value={inputValue} onChange={handleChange} className="ResearchBar"/><br/>
