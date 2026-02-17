@@ -150,6 +150,26 @@ export function CountryPage () {
         }
     }
 
+    const handleGoogleMaps = async () => {
+        try{
+            const response = await fetch(`https://serpapi.com/search.json?engine=google_maps&q=Belgium`, {
+            method: "GET"})
+
+            if (!response.ok) {
+            throw new Error(`Erreur API: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            console.log(data);
+
+
+        }catch(error){
+            console.log("Erreur lors de l'appel de l'API Google Maps", error)
+        }
+        
+    }
+
     useEffect(()=>{
 
         const pswd = localStorage.getItem('password');
@@ -172,6 +192,8 @@ export function CountryPage () {
         const convTemp = readConversationByCountry(c);
 
         setConv(convTemp);
+
+        handleGoogleMaps();
 
     }, [refresh])
 
