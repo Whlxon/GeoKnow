@@ -11,6 +11,8 @@
     "sup": "remove",
     "sure": "Are you sure to remove the data of the conversation ?",
     "info": "If you click on yes, the conversation between you and the ai for this current country will be removed, but only for this current country not for others !!",
+    "butY":"Yes",
+    "butN":"No",
     "voiceError": "Sorry your browser don't support voice",
     "voice": "en-US",
     "questions": ["What is the capital?",

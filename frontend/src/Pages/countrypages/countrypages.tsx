@@ -204,7 +204,7 @@ export function CountryPage () {
                     <div>
                         {t('info')}
                     </div><br />
-                    <button className="redB" onClick={() => {handleReset(); setSupTrigger(false);}}>Oui</button><button className="greenB" onClick={() => {setSupTrigger(false)}}>Non</button>
+                    <button className="redB" onClick={() => {handleReset(); setSupTrigger(false);}}>{t('butY')}</button><button className="greenB" onClick={() => {setSupTrigger(false)}}>{t('butN')}</button>
                 </div>
             </>}
             
