@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
-import { saveConversation, readConversationByCountry } from "../utils/conversations";
-
+import { saveConversation, readConversationByCountry, readConversations } from "../utils/conversations";
 const apiKey = import.meta.env.VITE_MAMMOUTH_APIKEY;
 
 import './index.css';
@@ -17,6 +16,8 @@ export function CountryPage () {
     const [loading, setLoading] = useState(false);
     const [refresh, setRefresh] = useState<boolean>(false);
     const [speach, setSpeach] = useState(true);
+    const [noQuota, setNoQuota] = useState(false);
+    const [supTrigger, setSupTrigger] = useState(false);
     
     const [valeur, setValeur] = useState('');
     const [speachError, setSpeachError] = useState(false);
@@ -25,8 +26,28 @@ export function CountryPage () {
 
     const aiModel = "gpt-5-mini";
 
+    
+    
+    const handleReset = () => {
+        const data = readConversations();
+
+        let listTemp = [];
+
+        for(let i = 0; i < data.length; i++){
+            if(data[i].pays == country){
+                data[i].conv = []
+            }
+            listTemp.push(data[i])
+        }
+
+        localStorage.setItem('conversations', JSON.stringify(listTemp));
+        setRefresh(!refresh);
+    }
+
     const sendQuestion = async (question: string, pays: string) => {
         setValeur('');
+
+        setNoQuota(false);
 
         let currentConversation: Conv[] = [
             {
@@ -86,6 +107,13 @@ export function CountryPage () {
             throw new Error(`Erreur API: ${response.status}`);
             }
 
+            if(response.status == 429){
+                localStorage.setItem("noQuota", "true");
+                setNoQuota(true);
+                setLoading(false);
+                return;
+            }
+
             const data = await response.json();
 
             const iaMSG = data.choices[0].message.content;
@@ -100,7 +128,6 @@ export function CountryPage () {
             setLoading(false);
             setRefresh(!refresh);
             
-            
         } catch (error) {
             console.error("Erreur API Mammouth:", error);
             setLoading(false);
@@ -109,7 +136,6 @@ export function CountryPage () {
             return "Désolé, je n'ai pas pu obtenir de réponse.";
         }
 
-        
     };
 
     const handleQuestionSubmit = async () => {
@@ -150,26 +176,6 @@ export function CountryPage () {
         }
     }
 
-    const handleGoogleMaps = async () => {
-        try{
-            const response = await fetch(`https://serpapi.com/search.json?engine=google_maps&q=Belgium`, {
-            method: "GET"})
-
-            if (!response.ok) {
-            throw new Error(`Erreur API: ${response.status}`);
-            }
-
-            const data = await response.json();
-
-            console.log(data);
-
-
-        }catch(error){
-            console.log("Erreur lors de l'appel de l'API Google Maps", error)
-        }
-        
-    }
-
     useEffect(()=>{
 
         const pswd = localStorage.getItem('password');
@@ -193,7 +199,9 @@ export function CountryPage () {
 
         setConv(convTemp);
 
-        handleGoogleMaps();
+        if(localStorage.getItem("noQuota") === "true"){
+            setNoQuota(true)
+        }
 
     }, [refresh])
 
@@ -234,21 +242,54 @@ export function CountryPage () {
             
             <h1 style={{textDecoration:'Underline'}}>{country}</h1>
             {speachError && <><div style={{color:"Red"}}>Désoler le navigateur ne prend pas en charge la voix</div></>}
-            <button style={{backgroundColor:"#fc817b", color:"#963e39"}} onClick={()=>{navigate('/')}}>Retour à la liste des pays</button><br/>
+            <button style={{backgroundColor:"#fc817b", color:"#963e39"}} onClick={()=>{navigate('/')}}>Retour à la liste des pays</button>
+            <button className="supp" onClick={() => {setSupTrigger(true);}}>Supprimer</button>
+            {supTrigger && 
+            <>
+                <br/>
+                <div className="popup">
+                    <h2>
+                        Est tu sur de vouloir supprimer les données de conversation ?
+                    </h2>
+                    <div>
+                        Si tu clique sur oui, la conversation entre toi et l'ia pour "{country}" sera supprimer, mais seulement pour "{country}" <br /> pas pour les autres !!
+                    </div><br />
+                    <button className="redB" onClick={() => {handleReset(); setSupTrigger(false);}} >Oui</button><button className="greenB" onClick={() => {setSupTrigger(false)}}>Non</button>
+                </div>
+            </>}
             
             <hr/><br/>
-            <h2 style={{textDecoration:'Underline'}}>Questions Suggérées</h2>
-            <button className="buttonSuggest" onClick={() => {handleSuggest("Quel est la capital ?")}}><li>Quel est la capital ?</li></button><br/>
-            <button className="buttonSuggest" onClick={() => {handleSuggest("Combien a-t-il d'habitant ?")}}><li>Combien a-t-il d'habitant ?</li></button><br/>
-            <button className="buttonSuggest" onClick={() => {handleSuggest("Quels sont les traditions ?")}}><li>Quels sont les traditions ?</li></button><br/>
-            <button className="buttonSuggest" onClick={() => {handleSuggest("Quels sont les villes avec +1000 habitants ?")}}><li>Quels sont les villes avec +1000 habitants ?</li></button><br/>
-            <button className="buttonSuggest" onClick={() => {handleSuggest("Quel est l'histoire la plus connu du pays ?")}}><li>Quel est l'histoire la plus connu du pays ?</li></button><br/><br/>
+            { !noQuota && <>
+                    <h2 style={{textDecoration:'Underline'}}>Questions Suggérées</h2>
+                    <button className="buttonSuggest" onClick={() => {handleSuggest("Quel est la capital ?")}}><li>Quel est la capital ?</li></button><br/>
+                    <button className="buttonSuggest" onClick={() => {handleSuggest("Combien a-t-il d'habitant ?")}}><li>Combien a-t-il d'habitant ?</li></button><br/>
+                    <button className="buttonSuggest" onClick={() => {handleSuggest("Quels sont les traditions ?")}}><li>Quels sont les traditions ?</li></button><br/>
+                    <button className="buttonSuggest" onClick={() => {handleSuggest("Quels sont les villes avec +1000 habitants ?")}}><li>Quels sont les villes avec +1000 habitants ?</li></button><br/>
+                    <button className="buttonSuggest" onClick={() => {handleSuggest("Quel est l'histoire la plus connu du pays ?")}}><li>Quel est l'histoire la plus connu du pays ?</li></button><br/><br/>
 
-            <div style={{backgroundColor:"#e2e9ab", borderRadius:"20px", padding:'15px', marginBottom:"5vh"}} >
-                <ConvProp/>
-                {loading && <div className="loader" style={{marginLeft:"auto", marginRight:"auto", marginBottom:"5px"}}></div>}
-                <input onKeyPress={(e) => e.key === 'Enter' && handleQuestionSubmit()} value={valeur} onChange={(e) => setValeur(e.target.value)} className="askQ" type="text" placeholder="Posez votre question ici" /><br/>
-            </div>
+                    <div style={{backgroundColor:"#e2e9ab", borderRadius:"20px", padding:'15px', marginBottom:"5vh"}} >
+                        <ConvProp/>
+                        {loading && <div className="loader" style={{marginLeft:"auto", marginRight:"auto", marginBottom:"5px"}}></div>}
+                        <input onKeyPress={(e) => e.key === 'Enter' && handleQuestionSubmit()} value={valeur} onChange={(e) => setValeur(e.target.value)} className="askQ" type="text" placeholder="Posez votre question ici" /><br/>
+                    </div>
+                </>
+            }
+
+            { noQuota &&
+            <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100vh',
+                textAlign: 'center',
+                padding: '20px'
+            }}>
+                <div>
+                    <h1>Oups....</h1>
+                    <p>Désolé, nous avons atteint la limite de message avec l'IA pour ce mois</p>
+                    <p>Attendez le mois prochain ou contactez Cyril Houppertz l'administrateur de l'application.</p>
+                </div>
+            </div>}
         </>
     )
 }

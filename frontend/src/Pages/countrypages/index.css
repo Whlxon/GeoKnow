@@ -53,3 +53,9 @@
   0%,5%  {rotate:  0deg}
   95%,to {rotate:-60deg}
 }
+
+.supp{
+  margin-left: 10px;
+  background-color: #fc817b;
+  color: #963e39;
+}
