@@ -23,3 +23,13 @@
 .ResearchBar:hover{
   border-color: #00000009;
 }
+
+.redB{
+  background-color: #fc817b;
+  color: #963e39;
+}
+
+.greenB{
+  margin-left: 5px;
+  background-color: #d0da8b;
+}

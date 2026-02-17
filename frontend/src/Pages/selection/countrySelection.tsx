@@ -12,6 +12,7 @@ const defaultCountries: Country[] = [{
 
 export function HomePage (){
     const [country, setCountry ] = useState<Country[]>(defaultCountries);
+    const [supTrigger, setSupTrigger] = useState(false);
     const navigate = useNavigate()
 
 
@@ -82,7 +83,8 @@ export function HomePage (){
         <>
          <input onChange={handleChangement} className="ResearchBar" placeholder="Recherche un Pays/Ville"/>
          <button className="randomBu" onClick={() => {handleRandom()}}><img src="/random.png" alt="" /></button>
-         <button style={{backgroundColor:"#fc817b", color:"#963e39"}} onClick={() => {handleReset()}}>Reset Conv</button>
+         <button className="redB" onClick={() => {setSupTrigger(true);}}>Supprimer</button>
+         {supTrigger && <><br/><div className="popup"><h2>Est tu sur de vouloir supprimer les données de conversation ?</h2><div>Cela supprimera seulement les messages que l'ia et vous, avez envoyer</div><br /><button className="redB" onClick={() => {handleReset(); setSupTrigger(false);}} >Oui</button><button className="greenB" onClick={() => {setSupTrigger(false)}}>Non</button></div></>}
          <hr/>
          {country != undefined && <CountryProp/>}
         </>

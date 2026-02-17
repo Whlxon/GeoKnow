@@ -5,7 +5,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css'
 
 import App from './Pages/App.tsx'
-import { HomePage } from './Pages/homepage/countrySelection.tsx';
+import { HomePage } from './Pages/selection/countrySelection.tsx';
 import { CountryPage } from './Pages/countrypages/countrypages.tsx';
 import { Password } from './Pages/mdp/password.tsx';
 
