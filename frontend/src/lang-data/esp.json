@@ -1,4 +1,8 @@
 {
+    "title": "Esta aplicación es privada",
+    "subtitle": "Por favor, introduce la contraseña para acceder",
+    "wrong": "Contraseña incorrecta",
+    "enter": "Acceder a la app",
     "copyright": "© Todos los derechos reservados a Cyril Houppertz alias Whixon",
     "researchbar": "Buscar un país",
     "msg": "Tú",

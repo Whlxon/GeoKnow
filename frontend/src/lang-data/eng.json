@@ -1,4 +1,8 @@
 {
+    "title": "This application is private",
+    "subtitle": "Please enter the password to access it",
+    "wrong": "Incorrect Password",
+    "enter": "Enter the app",
     "copyright": "© All right reserved Cyril Houppertz alias Whixon",
     "researchbar": "Search a country",
     "msg": "You",
