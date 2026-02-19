@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 
+import './index.css';
+
 export function Password (){
     const { t } = useTranslation();
     const [inputValue, setInputValue] = useState('');
@@ -52,8 +54,8 @@ export function Password (){
             <button className="lang" onClick={() => {handleLangage("eng")}}>Eng</button><button className="lang" onClick={() => {handleLangage("fr")}}>Fr</button><button className="lang" onClick={() => {handleLangage("esp")}}>esp</button><br/>
             {error && <><div style={{color:"Red"}}>{t('wrong')}</div></>}
             <form onSubmit={handleSubmit}>
-                <label htmlFor="msp" onMouseOver={() => {setHidden("text")}} onMouseLeave={() => {setHidden("password")}}>see</label>
-                <input type={`${hidden}`} value={inputValue} onChange={handleChange} className="ResearchBar" id="mdp"/><br/>
+                <label className="see" htmlFor="msp" onMouseOver={() => {setHidden("text")}} onMouseLeave={() => {setHidden("password")}}>see</label>
+                <input type={`${hidden}`} value={inputValue} onChange={handleChange} className="mdpInput" placeholder={`${t('inputmdp')}`} id="mdp"/><br/>
                 <button type="submit">{t('enter')}</button>
             </form>
         </>

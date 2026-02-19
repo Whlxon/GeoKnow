@@ -1,6 +1,7 @@
 {
     "title": "This application is private",
     "subtitle": "Please enter the password to access it",
+    "inputmdp": "Enter the password",
     "wrong": "Incorrect Password",
     "enter": "Enter the app",
     "copyright": "© All right reserved Cyril Houppertz alias Whixon",

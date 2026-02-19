@@ -1,0 +1,20 @@
+.lang{
+    border: 1;
+}
+
+.see{
+    border: 1;
+    color: black;
+    border-color: black;
+}
+
+.mdpInput{
+    border: 0;
+    height: 4vh;
+    margin-left: 2vw;
+    width: 50vw;
+    border-radius: 100px;
+    padding: 10px;
+    color: black;
+    background-color: white;
+}
