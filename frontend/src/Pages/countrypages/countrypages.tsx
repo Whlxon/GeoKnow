@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
-import { saveConversation, readConversationByCountry } from "../utils/conversations";
+import { saveConversation, readConversationByCountry, readConversations } from "../utils/conversations";
+import { useTranslation } from 'react-i18next';
+
 
 const apiKey = import.meta.env.VITE_MAMMOUTH_APIKEY;
 
 import './index.css';
-
-interface Conv {
-    user: string,
-    message: string,
-}
+import { ConvProp, type Conv } from "./convprop";
 
 export function CountryPage () {
     const [country, setCountry] = useState<string>("");
@@ -17,12 +15,40 @@ export function CountryPage () {
     const [loading, setLoading] = useState(false);
     const [refresh, setRefresh] = useState<boolean>(false);
     const [speach, setSpeach] = useState(true);
+    const [noQuota, setNoQuota] = useState(false);
+    const [supTrigger, setSupTrigger] = useState(false);
+    const [questions, setQuestions] = useState<string[]>();
+    const { t } = useTranslation();
+    
+    const [valeur, setValeur] = useState('');
     const [speachError, setSpeachError] = useState(false);
+
     const navigate = useNavigate();
 
     const aiModel = "gpt-5-mini";
 
+    
+    
+    const handleReset = () => {
+        const data = readConversations();
+
+        let listTemp = [];
+
+        for(let i = 0; i < data.length; i++){
+            if(data[i].pays == country){
+                data[i].conv = []
+            }
+            listTemp.push(data[i])
+        }
+
+        localStorage.setItem('conversations', JSON.stringify(listTemp));
+        setRefresh(!refresh);
+    }
+
     const sendQuestion = async (question: string, pays: string) => {
+        setValeur('');
+
+        setNoQuota(false);
 
         let currentConversation: Conv[] = [
             {
@@ -38,31 +64,9 @@ export function CountryPage () {
             messages: [
             {
                 role: 'user', 
-                content:`Tu es un expert en histoire, géographie et Politique. Réponds de manière concise (petit paragraphe 150 mots) et précise.
-                        Si la question n'est pas claire, demande des précisions.
-
-                        Peux tu répondre à la question comme si tu répondais à un débutant qui s'y connais pas du tout.
-
-                        Utilise un Jargon d'enfant.
-
-                        J'aimerais que tu sache également que vu que tu ne te rapelle pas de ce que tu dis,
-                        j'aimerais que tu ne pose pas de question à l'utilisateur, cela ne sert à rien. répond simplement à la question.
-
-                        Si l'utilisateur te demande de lui posé une question dit simplement:
-                        "Désoler je n'ai pas la capacité de mémoriser la conversation :/"
-
-                        Vraiment ne répond que à des questions sur l'histoire géo et rien d'autre, même une blague tu répond pas 
-                        (mais si quelqu'un te salue, présente toi tout de même ^^)
-                        
-                        Si la question posée par l'utilisateur n'a rien à voir avec l'histoire géo d'un pays, répond par:
-                        "Désoler votre question est hors sujet :/"
-
-                        Exemples de réponses :
-                        - "La capitale de la France est Paris."
-                        - "Le Nil est le plus long fleuve du monde (6 650 km)."
-                        
-                        Voici la question, le pays concerné est ${pays} et répond exclusivement par apport à ce pays:
-                        ${question}`
+                content:`${t('prompt')}
+                         A) ${pays}
+                         B) ${question}`
             },
         ]}
         
@@ -82,6 +86,13 @@ export function CountryPage () {
             throw new Error(`Erreur API: ${response.status}`);
             }
 
+            if(response.status == 429){
+                localStorage.setItem("noQuota", "true");
+                setNoQuota(true);
+                setLoading(false);
+                return;
+            }
+
             const data = await response.json();
 
             const iaMSG = data.choices[0].message.content;
@@ -96,7 +107,6 @@ export function CountryPage () {
             setLoading(false);
             setRefresh(!refresh);
             
-            
         } catch (error) {
             console.error("Erreur API Mammouth:", error);
             setLoading(false);
@@ -105,12 +115,11 @@ export function CountryPage () {
             return "Désolé, je n'ai pas pu obtenir de réponse.";
         }
 
-        
     };
 
-    const handleQuestionSubmit = async (e:any) => {
+    const handleQuestionSubmit = async () => {
         const pays = localStorage.getItem('country')
-        const question = e.target.value;
+        const question = valeur;
 
         if(pays === null){
             return;
@@ -119,7 +128,7 @@ export function CountryPage () {
         sendQuestion(question, pays)
     }
 
-    const handleSuggest = (question: string) => {
+    const sendSuggest = (question: string) => {
         const pays = localStorage.getItem('country')
 
         if(pays === null){
@@ -133,7 +142,7 @@ export function CountryPage () {
         if(speach){
             if ('speechSynthesis' in window) {
                 const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'fr-FR';
+                utterance.lang = t('voice');
                 window.speechSynthesis.speak(utterance);
                 setSpeachError(false);
             } else {
@@ -147,6 +156,8 @@ export function CountryPage () {
     }
 
     useEffect(()=>{
+        const co = t('questions', { returnObjects:true }) as string[];
+        setQuestions(co);
 
         const pswd = localStorage.getItem('password');
         const password = import.meta.env.VITE_PASSWORD_KEY;
@@ -169,60 +180,68 @@ export function CountryPage () {
 
         setConv(convTemp);
 
+        if(localStorage.getItem("noQuota") === "true"){
+            setNoQuota(true)
+        }
+
     }, [refresh])
-
-
-    const ConvProp = () => {
-
-        return (
-            <>
-                <div style={{borderRadius:'10px', resize: 'none'}}>
-                    <div>
-                        {conv !== undefined && conv.map((msg:any, index:any) => {
-                            return(
-                                <>
-                                    <div>
-                                        { msg.user === 'ai' && <div style={{marginTop:'5px', marginBottom:'12px', textAlign:'left', marginLeft:'10vw', marginRight:'10vw'}} key={index}>
-                                            <div style={{textDecoration:"Underline", fontSize:"larger"}}>GeoKnow ({aiModel})</div> <br/>
-                                            {msg.message} <button className="listenB" onClick={() => {handleSpeach(msg.message)}}><img src="/ecoute.png"/></button>
-                                        </div>
-                                        }
-                                        { msg.user === 'user' && <div style={{marginTop:'5px', marginBottom:'12px', textAlign:'right', marginLeft:'10vw', marginRight:'10vw'}} key={index}>
-                                            <div style={{textDecoration:"Underline", fontSize:"larger"}}>Vous:</div><br/>
-                                            {msg.message}
-                                        </div>
-                                        }
-                                    </div>
-                                </>
-                            );
-                        })}
-                    </div>
-                </div>
-            </>
-        );
-    }
-
 
     return (
         <>
             
             <h1 style={{textDecoration:'Underline'}}>{country}</h1>
-            {speachError && <><div style={{color:"Red"}}>Désoler le navigateur ne prend pas en charge la voix</div></>}
-            <button style={{backgroundColor:"#fc817b", color:"#963e39"}} onClick={()=>{navigate('/')}}>Retour à la liste des pays</button><br/>
+            {speachError && <><div style={{color:"Red"}}>{t('voiceError')}</div></>}
+            
+            <button style={{backgroundColor:"#fc817b", color:"#963e39"}} onClick={()=>{navigate('/')}}>{t('back')}</button>
+            <button className="supp" onClick={() => {setSupTrigger(true);}}>{t('sup')}</button>
+            {supTrigger && 
+            <>
+                <br/>
+                <div className="popup">
+                    <h2>
+                        {t('sure')}
+                    </h2>
+                    <div>
+                        {t('info')}
+                    </div><br />
+                    <button className="redB" onClick={() => {handleReset(); setSupTrigger(false);}}>{t('butY')}</button><button className="greenB" onClick={() => {setSupTrigger(false)}}>{t('butN')}</button>
+                </div>
+            </>}
             
             <hr/><br/>
-            <h2 style={{textDecoration:'Underline'}}>Questions Suggérées</h2>
-            <button className="buttonSuggest" onClick={() => {handleSuggest("Quel est la capital ?")}}><li>Quel est la capital ?</li></button><br/>
-            <button className="buttonSuggest" onClick={() => {handleSuggest("Combien a-t-il d'habitant ?")}}><li>Combien a-t-il d'habitant ?</li></button><br/>
-            <button className="buttonSuggest" onClick={() => {handleSuggest("Quels sont les traditions ?")}}><li>Quels sont les traditions ?</li></button><br/>
-            <button className="buttonSuggest" onClick={() => {handleSuggest("Quels sont les villes avec +1000 habitants ?")}}><li>Quels sont les villes avec +1000 habitants ?</li></button><br/>
-            <button className="buttonSuggest" onClick={() => {handleSuggest("Quel est l'histoire la plus connu du pays ?")}}><li>Quel est l'histoire la plus connu du pays ?</li></button><br/><br/>
+            { !noQuota && <>
+                    <h2 style={{textDecoration:'Underline'}}>{t('sug')}</h2>
+                    
+                    {
+                        questions !== undefined && <>{questions.map((question, index)=>{
+                            return(<><div key={index}><button className="buttonSuggest" onClick={() => {sendSuggest(question)}}>{question}</button><br/></div></>);
+                        })}<br/></>
+                    }
 
-            <div style={{backgroundColor:"#e2e9ab", borderRadius:"20px", padding:'15px', marginBottom:"5vh"}} >
-                <ConvProp/>
-                {loading && <div className="loader" style={{marginLeft:"auto", marginRight:"auto", marginBottom:"5px"}}></div>}
-                <input onKeyPress={(e) => e.key === 'Enter' && handleQuestionSubmit(e)} className="askQ" type="text" placeholder="Posez votre question ici" /><br/>
-            </div>
+                    <div style={{backgroundColor:"#e2e9ab", borderRadius:"20px", padding:'15px', marginBottom:"5vh"}} >
+                        <ConvProp conv={conv || []} aiModel={aiModel} handleSpeach={handleSpeach} mess={t('msg')}/>
+
+                        {loading && <div className="loader" style={{marginLeft:"auto", marginRight:"auto", marginBottom:"5px"}}></div>}
+                        <input onKeyPress={(e) => e.key === 'Enter' && handleQuestionSubmit()} value={valeur} onChange={(e) => setValeur(e.target.value)} className="askQ" type="text" placeholder={t('ask')} /><br/>
+                    </div>
+                </>
+            }
+
+            { noQuota &&
+            <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100vh',
+                textAlign: 'center',
+                padding: '20px'
+            }}>
+                <div>
+                    <h1>Oups....</h1>
+                    <p>Désolé, nous avons atteint la limite de message avec l'IA pour ce mois</p>
+                    <p>Attendez le mois prochain ou contactez Cyril Houppertz l'administrateur de l'application.</p>
+                </div>
+            </div>}
         </>
     )
 }

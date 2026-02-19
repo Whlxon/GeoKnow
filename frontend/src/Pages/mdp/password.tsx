@@ -1,20 +1,29 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 export function Password (){
-    
+    const { t } = useTranslation();
     const [inputValue, setInputValue] = useState('');
     const [error, setError] = useState(false);
-    const [password, setPassword] = useState("");
+    const [refresh, setRefresh] = useState(false);
+    const { i18n } = useTranslation();
     const navigate = useNavigate();
 
     const handleChange = (e:any) => {
         setInputValue(e.target.value);
     };
 
+    const handleLangage = (lang: string) => {
+        setRefresh(!refresh);
+        i18n.changeLanguage(lang);
+    }
+
     const handleSubmit = (e:any) => {
         e.preventDefault();
         
+        const password = import.meta.env.VITE_
+
         const pswd = inputValue;
 
         if(pswd === password){
@@ -28,9 +37,7 @@ export function Password (){
 
     useEffect(()=>{
         const pswd = localStorage.getItem('password');
-        const pwrd = import.meta.env.VITE_PASSWORD_KEY;
-
-        setPassword(pwrd);
+        const password = import.meta.env.VITE_PASSWORD_KEY;
         
         if(pswd === password){
             navigate('/selection');
@@ -39,12 +46,13 @@ export function Password (){
 
     return (
         <>
-            <h1>Cette Application est privé</h1>
-            <h2>Veuillez entré le mot de passe pour pouvoir y accéder</h2>
-            {error && <><div style={{color:"Red"}}>Mot de passe Incorrect</div></>}
+            <h1>{t('title')}</h1>
+            <h2>{t('subtitle')}</h2>
+            <button className="lang" onClick={() => {handleLangage("eng")}}>Eng</button><button className="lang" onClick={() => {handleLangage("fr")}}>Fr</button><button className="lang" onClick={() => {handleLangage("esp")}}>esp</button><br/>
+            {error && <><div style={{color:"Red"}}>{t('wrong')}</div></>}
             <form onSubmit={handleSubmit}>
                 <input type="password" value={inputValue} onChange={handleChange} className="ResearchBar"/><br/>
-                <button type="submit">Entré sur l'app</button>
+                <button type="submit">{t('enter')}</button>
             </form>
         </>
     );

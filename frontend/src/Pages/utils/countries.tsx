@@ -1,13 +1,10 @@
-
 import type { Country} from './countryList';
-import  { countries } from './countryList';
 
-
-export const getAll = () => {
+export const getAll = (countries: Country[]) => {
     return countries
 }
 
-export const getRandomCountry = (): Country => {
+export const getRandomCountry = (countries: Country[]): Country => {
     const min: number = 0
     const max: number = countries.length
     const index = Math.floor(Math.random() * (max - min + 1)) + min;
@@ -17,8 +14,11 @@ export const getRandomCountry = (): Country => {
 
 }
 
-export const getLike = (name: string): Country[] => {
+export const getLike = (name: string, countries: Country[]): Country[] => {
+    console.log('getLike List', countries)
+
     if(name === " " || name === ""){
+        console.log('Exit bc empty')
         return countries;
     }
     
@@ -27,7 +27,11 @@ export const getLike = (name: string): Country[] => {
     
     for(let i = 0; i < countries.length; i++){
         if(countries[i].name.includes(name)){
-            countryList.push(countries[i]);
+            const c: Country = {
+                id: countries[i].id,
+                name: countries[i].name
+            }
+            countryList.push(c);
         }
     }
 
@@ -36,6 +40,8 @@ export const getLike = (name: string): Country[] => {
         id: -1,
         name: "No Country Found"
     }]
+
+    console.log("getLike List after", countryList)
 }
     return countryList;
 };

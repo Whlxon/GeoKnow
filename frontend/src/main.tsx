@@ -1,13 +1,16 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { Suspense } from 'react';
 
 import './index.css'
 
 import App from './Pages/App.tsx'
-import { HomePage } from './Pages/homepage/countrySelection.tsx';
+import { HomePage } from './Pages/selection/countrySelection.tsx';
 import { CountryPage } from './Pages/countrypages/countrypages.tsx';
 import { Password } from './Pages/mdp/password.tsx';
+
+import './i18.ts';
 
 const router = createBrowserRouter([
   {
@@ -32,6 +35,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router ={router}/>
+    <Suspense fallback={<div>Loading translations...</div>}>
+      <RouterProvider router ={router}/>
+    </Suspense>
   </StrictMode>,
 )

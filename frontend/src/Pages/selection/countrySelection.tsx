@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import type { Country } from '../utils/countryList';
 import { getLike, getAll, getRandomCountry } from "../utils/countries";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
+
 
 import './index.css'
 
@@ -11,11 +13,15 @@ const defaultCountries: Country[] = [{
 }]
 
 export function HomePage (){
+    const { t } = useTranslation();
+    const { i18n } = useTranslation();
     const [country, setCountry ] = useState<Country[]>(defaultCountries);
+    const [refresh, setRefresh] = useState(false);
     const navigate = useNavigate()
 
 
     useEffect(()=>{
+        
         const pswd = localStorage.getItem('password');
         const password = import.meta.env.VITE_PASSWORD_KEY;
 
@@ -23,13 +29,14 @@ export function HomePage (){
             navigate('/');
         }
 
-        setCountry(getAll());
-    }, [
+        const c: Country[] = t('pays', {returnObjects: true}) as Country[]
 
-    ])
+        setCountry(getAll(c));
+    }, [refresh])
 
     const handleRandom = () => {
-        const countryTemp = getRandomCountry();
+        const c: Country[] = t('pays', {returnObjects: true}) as Country[]
+        const countryTemp = getRandomCountry(c);
 
         localStorage.setItem('country', countryTemp.name);
 
@@ -44,23 +51,21 @@ export function HomePage (){
 
     const handleChangement = (e: any) => {
         const name = e.target.value
+        const c: Country[] = t('pays', {returnObjects: true}) as Country[]
 
-        const c = getLike(name);
+        const co = getLike(name, c);
         
         
-        setCountry(c);
+        setCountry(co);
         
     };
 
-    const handleReset = () => {
-        localStorage.setItem('conversations', "")
-    }
 
+    const CountryProp = ({ list }: { list: Array<{ id: number; name: string }> }) => {
 
-    const CountryProp = () => {
         return (
             <>
-                {Array.isArray(country) && country.map((country, index) => {
+                {Array.isArray(list) && list.map((country, index) => {
                     return (
                         <>
                             {country.name !== "No Country Found" && <div key={index}>
@@ -77,15 +82,23 @@ export function HomePage (){
         )
     }
 
+    const handleLangage = (lang: string) => {
+        setRefresh(!refresh);
+        i18n.changeLanguage(lang);
+    }
+
+
     return (
         <>
-            <input onChange={handleChangement} className="ResearchBar" placeholder="Recherche un Pays/Ville"/>
+            <button className="lang" onClick={() => {handleLangage("eng")}}>Eng</button><button className="lang" onClick={() => {handleLangage("fr")}}>Fr</button><button className="lang" onClick={() => {handleLangage("esp")}}>esp</button><br/>
+            <input onChange={handleChangement} className="ResearchBar" placeholder={t('researchbar')}/>
             <button className="randomBu" onClick={() => {handleRandom()}}><img src="/random.png" alt="" /></button>
-            <button style={{backgroundColor:"#fc817b", color:"#963e39"}} onClick={() => {handleReset()}}>Reset Conv</button>
+         
+            <div></div>
+
             <hr/>
-         {country != undefined && <CountryProp/>}
+            {country != undefined && <CountryProp list={country}/>}
         </>
     )
-
     
 }
