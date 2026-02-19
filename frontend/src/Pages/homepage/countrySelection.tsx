@@ -77,17 +77,15 @@ export function HomePage (){
         )
     }
 
-
     return (
         <>
-         <input onChange={handleChangement} className="ResearchBar" placeholder="Recherche un Pays/Ville"/>
-         <button className="randomBu" onClick={() => {handleRandom()}}><img src="/random.png" alt="" /></button>
-         <button style={{backgroundColor:"#fc817b", color:"#963e39"}} onClick={() => {handleReset()}}>Reset Conv</button>
-         <hr/>
+            <input onChange={handleChangement} className="ResearchBar" placeholder="Recherche un Pays/Ville"/>
+            <button className="randomBu" onClick={() => {handleRandom()}}><img src="/random.png" alt="" /></button>
+            <button style={{backgroundColor:"#fc817b", color:"#963e39"}} onClick={() => {handleReset()}}>Reset Conv</button>
+            <hr/>
          {country != undefined && <CountryProp/>}
         </>
     )
 
     
 }
-

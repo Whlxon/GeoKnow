@@ -5,6 +5,7 @@ export function Password (){
     
     const [inputValue, setInputValue] = useState('');
     const [error, setError] = useState(false);
+    const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
     const handleChange = (e:any) => {
@@ -13,8 +14,6 @@ export function Password (){
 
     const handleSubmit = (e:any) => {
         e.preventDefault();
-
-        const password = import.meta.env.VITE_PASSWORD_KEY;
         
         const pswd = inputValue;
 
@@ -29,8 +28,10 @@ export function Password (){
 
     useEffect(()=>{
         const pswd = localStorage.getItem('password');
-        const password = import.meta.env.VITE_PASSWORD_KEY;
+        const pwrd = import.meta.env.VITE_PASSWORD_KEY;
 
+        setPassword(pwrd);
+        
         if(pswd === password){
             navigate('/selection');
         }
