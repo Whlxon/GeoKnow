@@ -29,7 +29,8 @@ export const getLike = (name: string, countries: Country[]): Country[] => {
         if(countries[i].name.includes(name)){
             const c: Country = {
                 id: countries[i].id,
-                name: countries[i].name
+                name: countries[i].name,
+                iso: countries[i].iso
             }
             countryList.push(c);
         }
@@ -38,7 +39,8 @@ export const getLike = (name: string, countries: Country[]): Country[] => {
     if(countryList.length === 0){
         countryList = [{
         id: -1,
-        name: "No Country Found"
+        name: "No Country Found",
+        iso: "none"
     }]
 
     console.log("getLike List after", countryList)

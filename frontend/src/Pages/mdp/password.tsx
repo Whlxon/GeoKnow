@@ -8,6 +8,7 @@ export function Password (){
     const [error, setError] = useState(false);
     const [refresh, setRefresh] = useState(false);
     const { i18n } = useTranslation();
+    const [hidden, setHidden] = useState("password");
     const navigate = useNavigate();
 
     const handleChange = (e:any) => {
@@ -22,7 +23,7 @@ export function Password (){
     const handleSubmit = (e:any) => {
         e.preventDefault();
         
-        const password = import.meta.env.VITE_
+        const password = import.meta.env.VITE_PASSWORD_KEY;
 
         const pswd = inputValue;
 
@@ -51,7 +52,8 @@ export function Password (){
             <button className="lang" onClick={() => {handleLangage("eng")}}>Eng</button><button className="lang" onClick={() => {handleLangage("fr")}}>Fr</button><button className="lang" onClick={() => {handleLangage("esp")}}>esp</button><br/>
             {error && <><div style={{color:"Red"}}>{t('wrong')}</div></>}
             <form onSubmit={handleSubmit}>
-                <input type="password" value={inputValue} onChange={handleChange} className="ResearchBar"/><br/>
+                <label htmlFor="msp" onMouseOver={() => {setHidden("text")}} onMouseLeave={() => {setHidden("password")}}>see</label>
+                <input type={`${hidden}`} value={inputValue} onChange={handleChange} className="ResearchBar" id="mdp"/><br/>
                 <button type="submit">{t('enter')}</button>
             </form>
         </>

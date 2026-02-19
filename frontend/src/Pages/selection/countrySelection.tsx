@@ -9,7 +9,8 @@ import './index.css'
 
 const defaultCountries: Country[] = [{
     id: -1,
-    name: "No Country Found"
+    name: "No Country Found",
+    iso: "none"
 }]
 
 export function HomePage (){
@@ -61,24 +62,33 @@ export function HomePage (){
     };
 
 
-    const CountryProp = ({ list }: { list: Array<{ id: number; name: string }> }) => {
+    const CountryProp = ({ list }: { list: Array<{ id: number; name: string; iso: string }> }) => {
 
         return (
-            <>
+            <div className="countriesGrid"> {/* Conteneur principal en grid */}
                 {Array.isArray(list) && list.map((country, index) => {
                     return (
-                        <>
-                            {country.name !== "No Country Found" && <div key={index}>
-                                <button className="buttonPays" onClick={() => {handleClick(country.name)}}>
-                                    {country.name}
-                                </button>
-                            </div>}
-
-                            {country.name === "No Country Found" && <><div>No country found :/</div></>}
-                        </>
-                    )
+                            <>
+                                {country.name !== "No Country Found" && (
+                                    <div className="paysComponent" key={index}>
+                                        <button className="buttonPays" onClick={() => handleClick(country.name)}>
+                                            {country.iso === "xx" && <div>/</div>}
+                                            {country.iso !== "xx" && country.iso !== undefined && (
+                                                <img
+                                                    className="countryFlags"
+                                                    src={`https://countryflagsapi.netlify.app/flag/${country.iso.toLowerCase()}.svg`}
+                                                    alt={`Flag of ${country.name}`}
+                                                />
+                                            )}
+                                            <div>{country.name}</div>
+                                        </button>
+                                    </div>
+                                )}
+                                {country.name === "No Country Found" && <div className="noCountry">No country found :/</div>}
+                            </>
+                    );
                 })}
-            </>
+            </div>
         )
     }
 
@@ -90,13 +100,15 @@ export function HomePage (){
 
     return (
         <>
-            <button className="lang" onClick={() => {handleLangage("eng")}}>Eng</button><button className="lang" onClick={() => {handleLangage("fr")}}>Fr</button><button className="lang" onClick={() => {handleLangage("esp")}}>esp</button><br/>
-            <input onChange={handleChangement} className="ResearchBar" placeholder={t('researchbar')}/>
+
+            <div className="langComponent"><button className="lang" style={{backgroundColor:"#cbe5e7"}} onClick={() => {handleLangage("eng")}}>Eng</button><button className="lang" style={{backgroundColor:"#b2c9ca"}} onClick={() => {handleLangage("fr")}}>Fr</button><button className="lang" onClick={() => {handleLangage("esp")}}>esp</button><br/></div>
+            <hr/>
+            <input onChange={handleChangement} className="ResearchInput" placeholder={t('researchbar')}/>
             <button className="randomBu" onClick={() => {handleRandom()}}><img src="/random.png" alt="" /></button>
+            
+            
          
             <div></div>
-
-            <hr/>
             {country != undefined && <CountryProp list={country}/>}
         </>
     )

@@ -83,7 +83,7 @@ export function CountryPage () {
             });
 
             if (!response.ok) {
-            throw new Error(`Erreur API: ${response.status}`);
+                throw new Error(`Erreur API: ${response.status}`);
             }
 
             if(response.status == 429){
@@ -188,11 +188,9 @@ export function CountryPage () {
 
     return (
         <>
-            
-            <h1 style={{textDecoration:'Underline'}}>{country}</h1>
             {speachError && <><div style={{color:"Red"}}>{t('voiceError')}</div></>}
             
-            <button style={{backgroundColor:"#fc817b", color:"#963e39"}} onClick={()=>{navigate('/')}}>{t('back')}</button>
+            <button style={{marginTop:"1vh",backgroundColor:"#fc817b", color:"#963e39"}} onClick={()=>{navigate('/')}}>{t('back')}</button>
             <button className="supp" onClick={() => {setSupTrigger(true);}}>{t('sup')}</button>
             {supTrigger && 
             <>
@@ -207,8 +205,8 @@ export function CountryPage () {
                     <button className="redB" onClick={() => {handleReset(); setSupTrigger(false);}}>{t('butY')}</button><button className="greenB" onClick={() => {setSupTrigger(false)}}>{t('butN')}</button>
                 </div>
             </>}
-            
             <hr/><br/>
+            <h1 style={{textDecoration:'Underline'}}>{country}</h1>
             { !noQuota && <>
                     <h2 style={{textDecoration:'Underline'}}>{t('sug')}</h2>
                     
