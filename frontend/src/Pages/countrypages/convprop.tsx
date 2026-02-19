@@ -4,7 +4,7 @@ export interface Conv {
 }
 
 export const ConvProp = ({conv, aiModel, handleSpeach, mess} : {conv: Conv[], aiModel: string, handleSpeach:(msg:string)=>void, mess:string}) => {
-
+        console.log(conv);
         return (
             <>
                 <div style={{borderRadius:'10px', resize: 'none'}}>

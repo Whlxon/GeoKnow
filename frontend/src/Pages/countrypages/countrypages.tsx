@@ -8,9 +8,16 @@ const apiKey = import.meta.env.VITE_MAMMOUTH_APIKEY;
 
 import './index.css';
 import { ConvProp, type Conv } from "./convprop";
+import type { Country } from "../utils/countryList";
+
+const defaultCountry = {
+    id: -1,
+    name: "Default Country",
+    iso: "xx"
+}
 
 export function CountryPage () {
-    const [country, setCountry] = useState<string>("");
+    const [country, setCountry] = useState<Country>(defaultCountry);
     const [conv, setConv] = useState<Conv[]>();
     const [loading, setLoading] = useState(false);
     const [refresh, setRefresh] = useState<boolean>(false);
@@ -35,8 +42,8 @@ export function CountryPage () {
         let listTemp = [];
 
         for(let i = 0; i < data.length; i++){
-            if(data[i].pays == country){
-                data[i].conv = []
+            if(data[i].pays == country.name){
+                data[i] = {conv:[], pays:""}
             }
             listTemp.push(data[i])
         }
@@ -97,12 +104,14 @@ export function CountryPage () {
 
             const iaMSG = data.choices[0].message.content;
 
+            console.log(iaMSG);
+
             currentConversation.push({
                 user: 'ai',
                 message: iaMSG
             });
 
-            saveConversation(country, currentConversation);
+            saveConversation(country.name, currentConversation);
 
             setLoading(false);
             setRefresh(!refresh);
@@ -118,7 +127,7 @@ export function CountryPage () {
     };
 
     const handleQuestionSubmit = async () => {
-        const pays = localStorage.getItem('country')
+        const pays = country.name
         const question = valeur;
 
         if(pays === null){
@@ -129,13 +138,15 @@ export function CountryPage () {
     }
 
     const sendSuggest = (question: string) => {
-        const pays = localStorage.getItem('country')
+        const pays = country;
 
         if(pays === null){
             return;
         }
 
-        sendQuestion(question, pays)
+        
+
+        sendQuestion(question, pays.name)
     };
 
     const handleSpeach = (text: string) => {
@@ -167,16 +178,14 @@ export function CountryPage () {
         }
 
         const c = localStorage.getItem('country')
-
-        if(c != undefined){
-            setCountry(c)
-        }
-
         if(c === null){
             return;
-        }
+        };
+        
+        const coun: Country = JSON.parse(c) || {id:-1, name:"default country", iso:"xx"};
+        setCountry(coun);
 
-        const convTemp = readConversationByCountry(c);
+        const convTemp = readConversationByCountry(coun.name);
 
         setConv(convTemp);
 
@@ -191,7 +200,7 @@ export function CountryPage () {
             {speachError && <><div style={{color:"Red"}}>{t('voiceError')}</div></>}
             
             <button style={{marginTop:"1vh",backgroundColor:"#fc817b", color:"#963e39"}} onClick={()=>{navigate('/')}}>{t('back')}</button>
-            <button className="supp" onClick={() => {setSupTrigger(true);}}>{t('sup')}</button>
+            <button className="supp" onClick={() => {setSupTrigger(!supTrigger)}}>{t('sup')}</button>
             {supTrigger && 
             <>
                 <br/>
@@ -206,7 +215,13 @@ export function CountryPage () {
                 </div>
             </>}
             <hr/><br/>
-            <h1 style={{textDecoration:'Underline'}}>{country}</h1>
+            <h1 style={{textDecoration:'Underline'}}>{country.name}</h1>
+            <img
+                                                    className="countryFlags"
+                                                    src={`https://countryflagsapi.netlify.app/flag/${country.iso.toLowerCase()}.svg`}
+                                                    style={{width:"20%", }}
+                                                    alt={`Flag of ${country.name}`}
+                                                />
             { !noQuota && <>
                     <h2 style={{textDecoration:'Underline'}}>{t('sug')}</h2>
                     
@@ -216,11 +231,11 @@ export function CountryPage () {
                         })}<br/></>
                     }
 
-                    <div style={{backgroundColor:"#e2e9ab", borderRadius:"20px", padding:'15px', marginBottom:"5vh"}} >
+                    <div className="convSpace">
                         <ConvProp conv={conv || []} aiModel={aiModel} handleSpeach={handleSpeach} mess={t('msg')}/>
 
                         {loading && <div className="loader" style={{marginLeft:"auto", marginRight:"auto", marginBottom:"5px"}}></div>}
-                        <input onKeyPress={(e) => e.key === 'Enter' && handleQuestionSubmit()} value={valeur} onChange={(e) => setValeur(e.target.value)} className="askQ" type="text" placeholder={t('ask')} /><br/>
+                        <input onKeyPress={(e) => e.key === 'Enter' && handleQuestionSubmit()} value={valeur} onChange={(e) => setValeur(e.target.value)} id="askQ" className="askQ" type="text" placeholder={t('ask')} /><br/>
                     </div>
                 </>
             }

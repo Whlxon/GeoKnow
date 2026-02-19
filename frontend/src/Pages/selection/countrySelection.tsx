@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 
 import './index.css'
+import { readConversationByCountry } from "../utils/conversations";
 
 const defaultCountries: Country[] = [{
     id: -1,
@@ -14,14 +15,18 @@ const defaultCountries: Country[] = [{
 }]
 
 export function HomePage (){
+    let n = 0;
     const { t } = useTranslation();
     const { i18n } = useTranslation();
     const [country, setCountry ] = useState<Country[]>(defaultCountries);
     const [refresh, setRefresh] = useState(false);
+    const [convFilter, setConvFilter] = useState(false);
     const navigate = useNavigate()
 
 
     useEffect(()=>{
+
+        n = 0;
         
         const pswd = localStorage.getItem('password');
         const password = import.meta.env.VITE_PASSWORD_KEY;
@@ -39,13 +44,13 @@ export function HomePage (){
         const c: Country[] = t('pays', {returnObjects: true}) as Country[]
         const countryTemp = getRandomCountry(c);
 
-        localStorage.setItem('country', countryTemp.name);
+        localStorage.setItem('country', JSON.stringify(countryTemp));
 
         navigate('/CountryPage');
     };
 
-    const handleClick = (country: string) => {
-        localStorage.setItem('country', country);
+    const handleClick = (country: Country) => {
+        localStorage.setItem('country', JSON.stringify(country));
 
         navigate('/CountryPage');
     }
@@ -67,11 +72,18 @@ export function HomePage (){
         return (
             <div className="countriesGrid"> {/* Conteneur principal en grid */}
                 {Array.isArray(list) && list.map((country, index) => {
+                    const co = readConversationByCountry(country.name);
+
+                    if(convFilter && co === undefined){
+                        return(<></>);
+                    }
+                    n++;
+
                     return (
                             <>
                                 {country.name !== "No Country Found" && (
                                     <div className="paysComponent" key={index}>
-                                        <button className="buttonPays" onClick={() => handleClick(country.name)}>
+                                        <button className="buttonPays" onClick={() => handleClick(country)}>
                                             {country.iso === "xx" && <div>/</div>}
                                             {country.iso !== "xx" && country.iso !== undefined && (
                                                 <img
@@ -80,7 +92,8 @@ export function HomePage (){
                                                     alt={`Flag of ${country.name}`}
                                                 />
                                             )}
-                                            <div>{country.name}</div>
+                                            <div>{country.name}</div><br />
+                                            {co != undefined && <div>{t('beginConv')}</div>}
                                         </button>
                                     </div>
                                 )}
@@ -88,6 +101,8 @@ export function HomePage (){
                             </>
                     );
                 })}
+
+                {n === 0 && <><div style={{fontSize:"larger"}}>{t("convNotFound")}</div></>}
             </div>
         )
     }
@@ -101,14 +116,13 @@ export function HomePage (){
     return (
         <>
 
-            <div className="langComponent"><button className="lang" style={{backgroundColor:"#cbe5e7"}} onClick={() => {handleLangage("eng")}}>Eng</button><button className="lang" style={{backgroundColor:"#b2c9ca"}} onClick={() => {handleLangage("fr")}}>Fr</button><button className="lang" onClick={() => {handleLangage("esp")}}>esp</button><br/></div>
+            <div className="langComponent"><button className="lang" style={{backgroundColor:"#e7bc91"}} onClick={() => {handleLangage("eng")}}>Eng</button><button className="lang" style={{backgroundColor:"#d4a276"}} onClick={() => {handleLangage("fr")}}>Fr</button><button className="lang3" onClick={() => {handleLangage("esp")}}>esp</button><br/></div>
             <hr/>
             <input onChange={handleChangement} className="ResearchInput" placeholder={t('researchbar')}/>
             <button className="randomBu" onClick={() => {handleRandom()}}><img src="/random.png" alt="" /></button>
+            <button className="randomBu" onClick={() => {setConvFilter(!convFilter)}}><img src="/conv.png" alt="" /></button>
             
             
-         
-            <div></div>
             {country != undefined && <CountryProp list={country}/>}
         </>
     )

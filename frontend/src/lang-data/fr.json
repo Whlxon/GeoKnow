@@ -6,6 +6,8 @@
     "enter": "Entré sur l'app",
     "copyright": "© Tout droit reservé à Cyril Houppertz alias Whixon",
     "researchbar": "Recherche un pays...",
+    "beginConv": "Conversation en cours",
+    "convNotFound": "Vous n'avez aucune conversation en cours",
     "msg": "Vous",
     "sug": "Question Suggérée",
     "back": "Retour à la liste des pays",

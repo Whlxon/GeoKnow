@@ -27,15 +27,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: white;
     padding: 12px;
     width: 100%;
-    cursor: pointer;
-    transition: transform 0.2s;
-}
-
-.buttonPays:hover {
-    transform: scale(1.02);
 }
 
 .noCountry {
@@ -55,29 +48,53 @@
   background-color: transparent;
 }
 
+.lang3{
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+  margin-left: 1vw;
+
+  border-radius: 100px;
+  font-size: small;
+  background-color: #8b5e34;
+  color: #ffedd8;
+}
+
 .buttonPays{
   width: 220px;
   height: 270px;
   margin: 15px;
 
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.1s ease-in-out;
 
   color: black;
 
   --radius: 6px;
   background-color: transparent;
   background-image: 
-    radial-gradient(var(--radius), transparent 98%, rgb(255, 255, 255)), 
-    linear-gradient(rgb(255, 255, 255) 0 0);
+    radial-gradient(var(--radius), transparent 98%, #e7bc91), 
+    linear-gradient(#e7bc91 0 0);
   background-repeat: round, no-repeat;
   /* Ajustement de la position et taille */
   background-position: calc(var(--radius) * -1.5) calc(var(--radius) * -1.5), 50%;
   background-size: calc(var(--radius) * 3) calc(var(--radius) * 3), 
                    calc(100% - var(--radius) * 3) calc(100% - var(--radius) * 3);
   
+
+  cursor: pointer;
+
   /* Ombre pour effet 3D */
   filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.2));
   padding: 20px; /* Espace pour le contenu */
+}
+
+.buttonPays:hover{
+  border-color: transparent;
+  transform: rotate(2deg);
+  
+}
+
+.buttonPays:focus{
+  border: 0;
 }
 
 
@@ -87,17 +104,14 @@ hr{
   background-color: rgba(92, 92, 92, 0.103);
 }
 
-.buttonPays:hover{
-  border-color: transparent;
-  transform: rotate(2deg);
-  
-}
-
 .randomBu{
-  width: 35px;
-
+  width: auto;
+  margin-left: 1vw;
+  height: 6vh;
+  border: 0;
   border-radius: 100px;
-  background-color: rgba(128, 128, 128, 0.068);
+  background-color: #8b5e34;
+  filter: drop-shadow(0px 0px 15px #58310148);
 }
 
 .ResearchInput{
@@ -113,18 +127,13 @@ hr{
   border-style: solid;
   border: 0;
   border-radius: 100px;
-  background-color: #ffffff;
+  background-color: #ffedd8;
 
-  filter: drop-shadow(0px 0px 15px rgba(0, 0, 0, 0.089));
+  filter: drop-shadow(0px 0px 15px #58310148);
 }
 
 .ResearchInput:focus{
   outline: none;
-}
-
-.ResearchBar:hover{
-  border-color: #00000009;
-  border-width: 8px;
 }
 
 .redB{
@@ -134,7 +143,7 @@ hr{
 
 .greenB{
   margin-left: 5px;
-  background-color: #d0da8b;
+  background-color: #d4a276;
 }
 
 .countryFlags{

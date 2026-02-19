@@ -6,6 +6,8 @@
     "enter": "Enter the app",
     "copyright": "© All right reserved Cyril Houppertz alias Whixon",
     "researchbar": "Search a country...",
+    "beginConv": "Conversation in progress",
+    "convNotFound": "You have no ongoing conversations",
     "msg": "You",
     "sug": "Suggest Questions",
     "back": "Back to the country list",
