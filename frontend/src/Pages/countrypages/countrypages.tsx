@@ -125,7 +125,7 @@ export function CountryPage () {
             return "Désolé, je n'ai pas pu obtenir de réponse.";
         }
 
-        await wait(500);
+        await wait(1000);
         scrollToBottom()
     };
 
