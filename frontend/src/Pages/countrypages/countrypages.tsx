@@ -26,6 +26,7 @@ export function CountryPage () {
     const [supTrigger, setSupTrigger] = useState(false);
     const [questions, setQuestions] = useState<string[]>();
     const { t } = useTranslation();
+    const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
     
     const [valeur, setValeur] = useState('');
     const [speachError, setSpeachError] = useState(false);
@@ -123,6 +124,8 @@ export function CountryPage () {
             
             return "Désolé, je n'ai pas pu obtenir de réponse.";
         }
+
+        await wait(500);
         scrollToBottom()
     };
 
