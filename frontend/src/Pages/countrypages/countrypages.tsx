@@ -123,7 +123,7 @@ export function CountryPage () {
             
             return "Désolé, je n'ai pas pu obtenir de réponse.";
         }
-
+        scrollToBottom()
     };
 
     const handleQuestionSubmit = async () => {
@@ -165,6 +165,13 @@ export function CountryPage () {
             setSpeach(true);
         }
     }
+
+    const scrollToBottom = () => {
+        window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: 'smooth', // Pour un défilement fluide
+        });
+    };
 
     useEffect(()=>{
         const co = t('questions', { returnObjects:true }) as string[];
@@ -222,7 +229,7 @@ export function CountryPage () {
                                                     style={{width:"20%", }}
                                                     alt={`Flag of ${country.name}`}
                                                 />
-            { !noQuota && <>
+            {!noQuota && <>
                     <h2 style={{textDecoration:'Underline'}}>{t('sug')}</h2>
                     
                     {
@@ -234,7 +241,7 @@ export function CountryPage () {
                     <div className="convSpace">
                         <ConvProp conv={conv || []} aiModel={aiModel} handleSpeach={handleSpeach} mess={t('msg')}/>
 
-                        {loading && <div className="loader" style={{marginLeft:"auto", marginRight:"auto", marginBottom:"5px"}}></div>}
+                        {loading && <div className="loader"></div>}
                         <input onKeyPress={(e) => e.key === 'Enter' && handleQuestionSubmit()} value={valeur} onChange={(e) => setValeur(e.target.value)} id="askQ" className="askQ" type="text" placeholder={t('ask')} /><br/>
                     </div>
                 </>
