@@ -32,7 +32,7 @@ export function CountryPage () {
 
     const navigate = useNavigate();
 
-    const aiModel = "gpt-5-mini";
+    const aiModel = "gpt-5.2";
 
     
     
@@ -215,6 +215,7 @@ export function CountryPage () {
                 </div>
             </>}
             <hr/><br/>
+            <div style={{display:"inline-block"}}>bonjourqsd qdq d</div>
             <h1 style={{textDecoration:'Underline'}}>{country.name}</h1>
             <img
                                                     className="countryFlags"
