@@ -118,9 +118,10 @@ export function HomePage (){
 
             <div className="langComponent"><button className="lang" style={{backgroundColor:"#e7bc91"}} onClick={() => {handleLangage("eng")}}>Eng</button><button className="lang" style={{backgroundColor:"#d4a276"}} onClick={() => {handleLangage("fr")}}>Fr</button><button className="lang3" onClick={() => {handleLangage("esp")}}>esp</button><br/></div>
             <hr/>
-            <input onChange={handleChangement} className="ResearchInput" placeholder={t('researchbar')}/>
             <button className="randomBu" onClick={() => {handleRandom()}}><img src="/random.png" alt="" /></button>
             <button className="randomBu" onClick={() => {setConvFilter(!convFilter)}}><img src="/conv.png" alt="" /></button>
+            <br/>
+            <input onChange={handleChangement} className="ResearchInput" placeholder={t('researchbar')}/>
             
             
             {country != undefined && <CountryProp list={country}/>}

@@ -119,9 +119,9 @@ hr{
 }
 
 .ResearchInput{
-  height: 3vh;
-  margin-top: 6vh;
-  margin-bottom: 6vh;
+  height: 2em;
+  margin-top: 2em;
+  margin-bottom: 2em;
 
   width: 50%; /* Ou px, vw, etc. */
   margin-left: auto; /* Centre la div */
