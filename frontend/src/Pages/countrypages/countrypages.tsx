@@ -65,6 +65,8 @@ export function CountryPage () {
             }
         ];
 
+        const histo = localStorage.getItem('conversations') || "";
+
         const url = "https://api.mammouth.ai/v1/chat/completions";
 
         const requestBody = {
@@ -74,7 +76,8 @@ export function CountryPage () {
                 role: 'user', 
                 content:`${t('prompt')}
                          A) ${pays}
-                         B) ${question}`
+                         B) ${question}
+                         C) ${histo}`
             },
         ]}
         
@@ -225,7 +228,6 @@ export function CountryPage () {
                 </div>
             </>}
             <hr/><br/>
-            <div style={{display:"inline-block"}}>bonjourqsd qdq d</div>
             <h1 style={{textDecoration:'Underline'}}>{country.name}</h1>
             <img
                                                     className="countryFlags"
