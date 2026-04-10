@@ -33,7 +33,7 @@ export function CountryPage () {
 
     const navigate = useNavigate();
 
-    const aiModel = "gpt-5.2";
+    const aiModel = "gpt-5-mini";
 
     
     
