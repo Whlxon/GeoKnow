@@ -33,7 +33,7 @@ export function CountryPage () {
 
     const navigate = useNavigate();
 
-    const aiModel = "gpt-5-mini";
+    const aiModel = "deepseek-v4.1-flash";
 
     
     
